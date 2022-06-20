@@ -17,7 +17,6 @@
     }
   },
   "plugins": [
-    "react-app",
     "@typescript-eslint",
     "react-hooks",
     "prettier",
