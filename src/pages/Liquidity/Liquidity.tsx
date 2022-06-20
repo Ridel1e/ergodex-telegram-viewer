@@ -13,6 +13,7 @@ export const Liquidity: FC<LiquidityProps> = ({ isExpanded, expand }) => (
     <Flex.Item marginBottom={4} flex={1} stretch>
       <Top24hVolumePoolPreview />
     </Flex.Item>
+    {/*<Flex.Item flex={isExpanded ? 1 : 0}>Test</Flex.Item>*/}
     {!isExpanded && (
       <Button size="extra-large" type="primary" onClick={expand}>
         Show Pools

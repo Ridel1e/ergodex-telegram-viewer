@@ -1,12 +1,6 @@
 import { Box, Flex, Typography } from '@ergolabs/ui-kit';
-import React, { FC } from 'react';
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Area, AreaChart } from 'recharts';
 
 import { PriceRow } from './PriceRow/PriceRow';
 import { TitleRow } from './TitleRow/TitleRow';
@@ -56,38 +50,84 @@ const data = [
   },
 ];
 
-export const Top24hVolumePoolPreview: FC = () => (
-  <Flex col stretch>
-    <Flex.Item marginBottom={1}>
-      <Typography.Title level={4}>Top 1 by 24h Volume</Typography.Title>
-    </Flex.Item>
-    <Flex.Item flex={1}>
-      <Box contrast padding={2} height="100%">
-        <Flex col stretch>
-          <Flex.Item marginBottom={2}>
-            <TitleRow />
-          </Flex.Item>
-          <Flex.Item marginBottom={2}>
-            <PriceRow />
-          </Flex.Item>
-          <Flex.Item flex={1}>
-            <div style={{ width: '100%', height: '100%' }}>
-              <ResponsiveContainer height="100%" width="100%">
-                <AreaChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip />
-                  <Area
-                    type="monotone"
-                    dataKey="uv"
-                    stroke="#8884d8"
-                    fill="#8884d8"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </Flex.Item>
-        </Flex>
-      </Box>
-    </Flex.Item>
-  </Flex>
-);
+export const Top24hVolumePoolPreview: FC = () => {
+  const ref = useRef<HTMLDivElement | null>();
+  const [height, setHeight] = useState<number | undefined>(undefined);
+  const [width, setWidth] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (ref.current) {
+      setHeight(ref.current?.clientHeight);
+      setWidth(ref.current?.clientWidth);
+    }
+
+    window.addEventListener('resize', () => {
+      setHeight(ref.current?.clientHeight);
+      setWidth(ref.current?.clientWidth);
+    });
+  }, []);
+
+  return (
+    <Flex col stretch>
+      <Flex.Item marginBottom={1}>
+        <Typography.Title level={4}>Top 1 by 24h Volume</Typography.Title>
+      </Flex.Item>
+      <Flex.Item flex={1}>
+        <Box contrast padding={2} height="100%">
+          <Flex col stretch>
+            <Flex.Item marginBottom={2}>
+              <TitleRow />
+            </Flex.Item>
+            <Flex.Item marginBottom={2}>
+              <PriceRow />
+            </Flex.Item>
+            <Flex.Item flex={1}>
+              <div
+                style={{ width: '100%', height: '100%', position: 'relative' }}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute',
+                  }}
+                  ref={ref as any}
+                >
+                  {/*  <ResponsiveContainer height="100%" width="100%">*/}
+                  <AreaChart data={data} height={height} width={width}>
+                    <Area
+                      type="monotone"
+                      dataKey="uv"
+                      stroke="var(--ergo-primary-color-hover)"
+                      fill="url(#gradientColor)"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="gradientColor"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          stopColor="var(--ergo-primary-color-hover)"
+                          stopOpacity="0.5"
+                        />
+                        <stop
+                          offset="1"
+                          stopColor="var(--ergo-primary-color-hover)"
+                          stopOpacity="0"
+                        />
+                      </linearGradient>
+                    </defs>
+                  </AreaChart>
+                  {/*  </ResponsiveContainer>*/}
+                </div>
+              </div>
+            </Flex.Item>
+          </Flex>
+        </Box>
+      </Flex.Item>
+    </Flex>
+  );
+};
