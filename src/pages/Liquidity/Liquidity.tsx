@@ -10,7 +10,7 @@ export interface LiquidityProps {
 
 export const Liquidity: FC<LiquidityProps> = ({ isExpanded, expand }) => (
   <Flex col stretch>
-    <Flex.Item marginBottom={4} flex={1}>
+    <Flex.Item marginBottom={4} flex={1} stretch>
       <Top24hVolumePoolPreview />
     </Flex.Item>
     {!isExpanded && (
