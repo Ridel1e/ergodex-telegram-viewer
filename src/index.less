@@ -1,8 +1,10 @@
+@import '~@ergolabs/ui-kit/dist/styles/styles';
+
 body {
+  .defaultTheme();
+  background-color: var(--ergo-default-card-background);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: var(--tg-viewport-height);
@@ -11,5 +13,5 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
