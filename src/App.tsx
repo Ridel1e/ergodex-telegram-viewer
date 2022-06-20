@@ -5,18 +5,29 @@ import React, { FC, useEffect, useState } from 'react';
 import { Liquidity } from './pages/Liquidity/Liquidity';
 
 const App: FC = () => {
-  const [n, setN] = useState('no');
+  const [isExpanded, setIsExpanded] = useState<boolean>(
+    Telegram.WebApp.isExpanded,
+  );
 
   useEffect(() => {
-    (window as any).Telegram.WebApp.onEvent('viewportChanged', (res: any) =>
-      setN(JSON.stringify(res)),
-    );
-  });
+    const handleViewportChanged = () => {
+      if (Telegram.WebApp.isExpanded !== isExpanded) {
+        setIsExpanded(Telegram.WebApp.isExpanded);
+      }
+    };
+
+    Telegram.WebApp.onEvent('viewportChanged', handleViewportChanged);
+
+    return () =>
+      Telegram.WebApp.offEvent('viewportChanged', handleViewportChanged);
+  }, []);
 
   return (
     <>
-      {n}
-      <Liquidity />
+      <Liquidity
+        expand={() => Telegram.WebApp.expand()}
+        isExpanded={isExpanded}
+      />
     </>
   );
 };

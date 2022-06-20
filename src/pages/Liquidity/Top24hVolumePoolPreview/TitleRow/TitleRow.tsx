@@ -10,7 +10,7 @@ export const TitleRow: FC = () => (
       <AssetPairTitle assetX={networkAsset} assetY={networkAsset} />
     </Flex.Item>
     <Box>
-      <Typography.Body>Volume 24H: $55.24k</Typography.Body>
+      <Typography.Body>$55.24k</Typography.Body>
     </Box>
   </Flex>
 );

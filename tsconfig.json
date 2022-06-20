@@ -9,6 +9,10 @@
       "es2020.string",
       "esnext"
     ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/telegram-webapps-types"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
