@@ -6,7 +6,6 @@ import { Top24hVolumePoolPreview } from './Top24hVolumePoolPreview/Top24hVolumeP
 export interface LiquidityProps {
   readonly isExpanded?: boolean;
   readonly expand: () => void;
-  readonly a?: string;
 }
 
 export const Liquidity: FC<LiquidityProps> = ({ isExpanded, expand }) => (
