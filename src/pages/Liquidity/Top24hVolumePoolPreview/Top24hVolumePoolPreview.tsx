@@ -1,7 +1,8 @@
 import { Box, Flex, Typography } from '@ergolabs/ui-kit';
 import React, { FC } from 'react';
 
-import { AssetIconPair } from '../../../components/AssetIconPair/AssetIconPair';
+import { PriceRow } from './PriceRow/PriceRow';
+import { TitleRow } from './TitleRow/TitleRow';
 
 export const Top24hVolumePoolPreview: FC = () => (
   <Flex col>
@@ -10,7 +11,14 @@ export const Top24hVolumePoolPreview: FC = () => (
     </Flex.Item>
     <Flex.Item>
       <Box contrast padding={2}>
-        <AssetIconPair assetX={undefined} assetY={undefined} />
+        <Flex col>
+          <Flex.Item marginBottom={2}>
+            <TitleRow />
+          </Flex.Item>
+          <Flex.Item marginBottom={2}>
+            <PriceRow />
+          </Flex.Item>
+        </Flex>
       </Box>
     </Flex.Item>
   </Flex>

@@ -10,12 +10,23 @@ export interface TokenTitleProps {
   readonly size?: 'large' | 'small';
 }
 
-export const AssetTitle: FC<TokenTitleProps> = ({ assetX, assetY, size }) => (
+export const AssetPairTitle: FC<TokenTitleProps> = ({
+  assetX,
+  assetY,
+  size,
+}) => (
   <Flex align="center">
     <Flex.Item marginRight={1}>
       <AssetIconPair size={size} assetY={assetY} assetX={assetX} />
     </Flex.Item>
-    <Typography.Title level={5}>{assetX?.name}</Typography.Title> /
-    <Typography.Title level={5}>{assetY?.name}</Typography.Title>
+    <Flex.Item marginRight={1}>
+      <Typography.Title level={5}>{assetX?.name}</Typography.Title>
+    </Flex.Item>
+    /
+    <Flex.Item marginLeft={1}>
+      <Typography.Title style={{ marginTop: 0 }} level={5}>
+        {assetY?.name}
+      </Typography.Title>
+    </Flex.Item>
   </Flex>
 );
