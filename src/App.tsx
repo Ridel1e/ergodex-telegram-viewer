@@ -10,8 +10,12 @@ const App: FC = () => {
   );
 
   useEffect(() => {
-    const handleViewportChanged = () => {
-      setIsExpanded(Telegram.WebApp.isExpanded);
+    const handleViewportChanged = ({
+      isStateStable,
+    }: {
+      isStateStable: boolean;
+    }) => {
+      setIsExpanded(Telegram.WebApp.isExpanded && isStateStable);
     };
 
     Telegram.WebApp.onEvent('viewportChanged', handleViewportChanged);
