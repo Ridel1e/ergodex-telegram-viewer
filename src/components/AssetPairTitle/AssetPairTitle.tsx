@@ -3,6 +3,7 @@ import { Flex, Typography } from '@ergolabs/ui-kit';
 import React, { FC } from 'react';
 
 import { AssetIconPair } from '../AssetIconPair/AssetIconPair';
+import { Truncate } from '../Truncate/Truncate';
 
 export interface TokenTitleProps {
   readonly assetX?: AssetInfo;
@@ -20,13 +21,9 @@ export const AssetPairTitle: FC<TokenTitleProps> = ({
       <AssetIconPair size={size} assetY={assetY} assetX={assetX} />
     </Flex.Item>
     <Flex.Item marginRight={1}>
-      <Typography.Title level={5}>{assetX?.name}</Typography.Title>
-    </Flex.Item>
-    /
-    <Flex.Item marginLeft={1}>
-      <Typography.Title style={{ marginTop: 0 }} level={5}>
-        {assetY?.name}
-      </Typography.Title>
+      <Typography.Body>
+        <Truncate>{`${assetX?.name} / ${assetY?.name}`}</Truncate>
+      </Typography.Body>
     </Flex.Item>
   </Flex>
 );

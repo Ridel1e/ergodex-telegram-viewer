@@ -4,7 +4,7 @@ import { RustModule } from '@ergolabs/ergo-sdk';
 import React, { FC, useEffect, useState } from 'react';
 
 import { startAppTicks } from './common/streams/appTick';
-import { Liquidity } from './pages/Liquidity/Liquidity';
+import { PoolsOverview } from './pages/PoolsOverview/PoolsOverview';
 
 const App: FC = () => {
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const App: FC = () => {
 
   return (
     <>
-      <Liquidity
+      <PoolsOverview
         expand={() => Telegram.WebApp.expand()}
         isExpanded={isExpanded}
       />
