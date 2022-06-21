@@ -3,6 +3,7 @@ import '@ergolabs/ui-kit/dist/styles/fonts/fonts.less';
 import { RustModule } from '@ergolabs/ergo-sdk';
 import React, { FC, useEffect, useState } from 'react';
 
+import { startAppTicks } from './common/streams/appTick';
 import { Liquidity } from './pages/Liquidity/Liquidity';
 
 const App: FC = () => {
@@ -25,7 +26,10 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    RustModule.load().then(() => setIsAppReady(true));
+    RustModule.load().then(() => {
+      setIsAppReady(true);
+      startAppTicks();
+    });
   }, []);
 
   if (!isAppReady) {

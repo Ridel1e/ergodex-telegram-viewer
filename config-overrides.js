@@ -40,10 +40,5 @@ module.exports = function override(config) {
     lessLoaderOptions: { lessOptions: { javascriptEnabled: true } },
   })(config);
 
-  config.resolve.fallback = {
-    path: require.resolve('path-browserify'),
-    util: require.resolve('util'),
-  };
-
   return config;
 };
