@@ -33,7 +33,7 @@ export const PoolsOverview: FC<PoolsOverviewProps> = ({
         <PoolsListView
           ammPools={ammPools}
           ammPoolsLoading={loading}
-          expandHeight={INITIAL_CONTENT_HEIGHT}
+          contentHeight={INITIAL_CONTENT_HEIGHT}
           view={isExpanded ? WebView.EXPAND : WebView.PARTIAL}
         />
       </Flex.Item>

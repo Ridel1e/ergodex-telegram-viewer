@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { AmmPool } from '../../../common/models/AmmPool';
 import { PoolId } from '../../../common/types/common';
 import { WebView } from '../../../common/types/WebView';
+import { LoadingState } from '../../../components/states/LoadingState/LoadingState';
 import { PoolItemContent } from './PoolItemContent/PoolItemContent';
 import { PoolItemHeader } from './PoolItemHeader/PoolItemHeader';
 
@@ -13,7 +14,7 @@ interface PoolsListVIewProps {
   readonly view: WebView;
   readonly ammPools?: AmmPool[] | undefined;
   readonly ammPoolsLoading?: boolean;
-  readonly expandHeight: number;
+  readonly contentHeight: number;
 }
 
 const COLLAPSE_TITLE_HEIGHT = 72.5;
@@ -35,7 +36,7 @@ const getAmmPoolsByWebView = (
 const _PoolsListView: FC<PoolsListVIewProps> = ({
   className,
   view,
-  expandHeight,
+  contentHeight,
   ammPools,
   ammPoolsLoading,
 }) => {
@@ -55,7 +56,17 @@ const _PoolsListView: FC<PoolsListVIewProps> = ({
     }
   };
 
-  return ammPools ? (
+  if (ammPoolsLoading) {
+    return (
+      <LoadingState height={contentHeight}>
+        Loading pools.
+        <br />
+        Please wait.
+      </LoadingState>
+    );
+  }
+
+  return ammPools && !ammPoolsLoading ? (
     <Collapse
       accordion
       className={className}
@@ -71,7 +82,7 @@ const _PoolsListView: FC<PoolsListVIewProps> = ({
         >
           <PoolItemContent
             ammPool={ammPool}
-            contentHeight={expandHeight - COLLAPSE_TITLE_HEIGHT}
+            contentHeight={contentHeight - COLLAPSE_TITLE_HEIGHT}
           />
         </Collapse.Panel>
       ))}
@@ -80,7 +91,17 @@ const _PoolsListView: FC<PoolsListVIewProps> = ({
 };
 
 export const PoolsListView = styled(_PoolsListView)`
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   > .ant-collapse-item {
+    animation: fade-in 0.3s;
     background: var(--ergo-box-bg-contrast);
     border: 1px solid var(--ergo-box-border-color) !important;
     border-radius: var(--ergo-border-radius-md) !important;
