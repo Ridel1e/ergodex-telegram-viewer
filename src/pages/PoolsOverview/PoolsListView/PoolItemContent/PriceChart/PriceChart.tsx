@@ -79,13 +79,23 @@ export const PriceChart: FC<PriceChartProps> = () => {
     >
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: 'calc(100% + 32px)',
+          height: 'calc(100% + 16px)',
           position: 'absolute',
+          bottom: '-16px',
+          left: '-16px',
+          right: '16px',
+          overflow: 'hidden',
+          borderRadius: 'var(--ergo-border-radius-md)',
         }}
         ref={ref as any}
       >
-        <AreaChart data={data} height={height} width={width}>
+        <AreaChart
+          data={data}
+          height={height}
+          width={width}
+          margin={{ top: 0, bottom: 0, left: 0, right: 0 }}
+        >
           <Area
             type="monotone"
             dataKey="uv"

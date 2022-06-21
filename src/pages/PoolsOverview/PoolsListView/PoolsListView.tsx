@@ -1,10 +1,9 @@
 import { Collapse } from '@ergolabs/ui-kit';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { ammPools$ } from '../../../common/api/ammPools/ammPools';
-import { useObservable } from '../../../common/hooks/useObservable';
 import { AmmPool } from '../../../common/models/AmmPool';
+import { PoolId } from '../../../common/types/common';
 import { WebView } from '../../../common/types/WebView';
 import { PoolItemContent } from './PoolItemContent/PoolItemContent';
 import { PoolItemHeader } from './PoolItemHeader/PoolItemHeader';
@@ -12,24 +11,58 @@ import { PoolItemHeader } from './PoolItemHeader/PoolItemHeader';
 interface PoolsListVIewProps {
   readonly className?: string;
   readonly view: WebView;
+  readonly ammPools?: AmmPool[] | undefined;
+  readonly ammPoolsLoading?: boolean;
   readonly expandHeight: number;
 }
 
 const COLLAPSE_TITLE_HEIGHT = 72.5;
 
-const getAmmPoolsByWebView = (ammPools: AmmPool[], view: WebView): AmmPool[] =>
-  ammPools.slice(0, view === WebView.EXPAND ? ammPools.length : 1);
+const getAmmPoolsByWebView = (
+  ammPools: AmmPool[],
+  activePoolId: PoolId | undefined,
+  view: WebView,
+): AmmPool[] => {
+  if (view === WebView.EXPAND) {
+    return ammPools;
+  }
+  if (!activePoolId) {
+    return [ammPools[0]];
+  }
+  return ammPools.filter((ap) => ap.id === activePoolId);
+};
 
 const _PoolsListView: FC<PoolsListVIewProps> = ({
   className,
   view,
   expandHeight,
+  ammPools,
+  ammPoolsLoading,
 }) => {
-  const [ammPools] = useObservable(ammPools$, []);
+  const [activePoolId, setActivePoolId] = useState<PoolId | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    if (!activePoolId && ammPools) {
+      setActivePoolId(ammPools[0].id);
+    }
+  }, [ammPools]);
+
+  const handlePoolItemClick = (poolId: PoolId | PoolId[]) => {
+    if (typeof poolId === 'string') {
+      setActivePoolId(poolId);
+    }
+  };
 
   return ammPools ? (
-    <Collapse accordion className={className} defaultActiveKey={ammPools[0].id}>
-      {getAmmPoolsByWebView(ammPools, view).map((ammPool) => (
+    <Collapse
+      accordion
+      className={className}
+      activeKey={activePoolId}
+      onChange={handlePoolItemClick}
+    >
+      {getAmmPoolsByWebView(ammPools, activePoolId, view).map((ammPool) => (
         <Collapse.Panel
           collapsible={view === WebView.EXPAND ? 'header' : 'disabled'}
           showArrow={false}
