@@ -19,6 +19,7 @@ import { applicationConfig } from '../../../applicationConfig';
 import { AmmPool } from '../../models/AmmPool';
 import { getAggregatedPoolAnalyticsDataById24H } from '../../streams/poolAnalytic';
 import { verifiedAssets$ } from '../../streams/verifiedAssets';
+import { comparePoolByTvl } from '../../utils/comparePoolByTvl';
 import { networkContext$ } from '../networkContext/networkContext';
 import { ErgoAmmPool } from './ErgoAmmPool';
 import { nativeNetworkPools, networkPools } from './utils';
@@ -61,6 +62,13 @@ export const ammPools$ = networkContext$.pipe(
   switchMap((pools) =>
     combineLatest(pools.map(toAmmPool)).pipe(defaultIfEmpty([])),
   ),
+  map((pools) => pools.slice().sort(comparePoolByTvl)),
+  publishReplay(1),
+  refCount(),
+);
+
+export const top24hVolumeAmmPool$ = ammPools$.pipe(
+  map((pools) => pools[0]),
   publishReplay(1),
   refCount(),
 );

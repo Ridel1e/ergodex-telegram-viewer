@@ -2,6 +2,8 @@ import { Box, Flex, Typography } from '@ergolabs/ui-kit';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Area, AreaChart } from 'recharts';
 
+import { top24hVolumeAmmPool$ } from '../../../common/api/ammPools/ammPools';
+import { useObservable } from '../../../common/hooks/useObservable';
 import { PriceRow } from './PriceRow/PriceRow';
 import { TitleRow } from './TitleRow/TitleRow';
 
@@ -51,6 +53,7 @@ const data = [
 ];
 
 export const Top24hVolumePoolPreview: FC = () => {
+  const [top24hVolumeAmmPool, loading] = useObservable(top24hVolumeAmmPool$);
   const ref = useRef<HTMLDivElement | null>();
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
@@ -60,7 +63,9 @@ export const Top24hVolumePoolPreview: FC = () => {
       setHeight(ref.current?.clientHeight);
       setWidth(ref.current?.clientWidth);
     }
+  }, [loading]);
 
+  useEffect(() => {
     window.addEventListener('resize', () => {
       setHeight(ref.current?.clientHeight);
       setWidth(ref.current?.clientWidth);
@@ -74,58 +79,64 @@ export const Top24hVolumePoolPreview: FC = () => {
       </Flex.Item>
       <Flex.Item flex={1}>
         <Box contrast padding={2} height="100%">
-          <Flex col stretch>
-            <Flex.Item marginBottom={2}>
-              <TitleRow />
-            </Flex.Item>
-            <Flex.Item marginBottom={2}>
-              <PriceRow />
-            </Flex.Item>
-            <Flex.Item flex={1}>
-              <div
-                style={{ width: '100%', height: '100%', position: 'relative' }}
-              >
+          {!loading && top24hVolumeAmmPool && (
+            <Flex col stretch>
+              <Flex.Item marginBottom={2}>
+                <TitleRow ammPool={top24hVolumeAmmPool} />
+              </Flex.Item>
+              <Flex.Item marginBottom={2}>
+                <PriceRow ammPool={top24hVolumeAmmPool} />
+              </Flex.Item>
+              <Flex.Item flex={1}>
                 <div
                   style={{
                     width: '100%',
                     height: '100%',
-                    position: 'absolute',
+                    position: 'relative',
                   }}
-                  ref={ref as any}
                 >
-                  {/*  <ResponsiveContainer height="100%" width="100%">*/}
-                  <AreaChart data={data} height={height} width={width}>
-                    <Area
-                      type="monotone"
-                      dataKey="uv"
-                      stroke="var(--ergo-primary-color-hover)"
-                      fill="url(#gradientColor)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="gradientColor"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          stopColor="var(--ergo-primary-color-hover)"
-                          stopOpacity="0.5"
-                        />
-                        <stop
-                          offset="1"
-                          stopColor="var(--ergo-primary-color-hover)"
-                          stopOpacity="0"
-                        />
-                      </linearGradient>
-                    </defs>
-                  </AreaChart>
-                  {/*  </ResponsiveContainer>*/}
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                    }}
+                    ref={ref as any}
+                  >
+                    {/*  <ResponsiveContainer height="100%" width="100%">*/}
+                    <AreaChart data={data} height={height} width={width}>
+                      <Area
+                        type="monotone"
+                        dataKey="uv"
+                        stroke="var(--ergo-primary-color-hover)"
+                        fill="url(#gradientColor)"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="gradientColor"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            stopColor="var(--ergo-primary-color-hover)"
+                            stopOpacity="0.5"
+                          />
+                          <stop
+                            offset="1"
+                            stopColor="var(--ergo-primary-color-hover)"
+                            stopOpacity="0"
+                          />
+                        </linearGradient>
+                      </defs>
+                    </AreaChart>
+                    {/*  </ResponsiveContainer>*/}
+                  </div>
                 </div>
-              </div>
-            </Flex.Item>
-          </Flex>
+              </Flex.Item>
+            </Flex>
+          )}
         </Box>
       </Flex.Item>
     </Flex>

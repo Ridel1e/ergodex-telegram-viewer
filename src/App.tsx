@@ -9,8 +9,8 @@ import { Liquidity } from './pages/Liquidity/Liquidity';
 const App: FC = () => {
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(
-    Telegram.WebApp.isExpanded,
-    // false,
+    // Telegram.WebApp.isExpanded,
+    false,
   );
 
   useEffect(() => {
